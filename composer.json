@@ -1,0 +1,14 @@
+{
+    "name": "delta/userbot",
+    "description": "Delta PHP - Multi-user Telegram Userbot",
+    "type": "project",
+    "require": {
+        "php": ">=8.3",
+        "danog/madelineproto": "^8"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}

@@ -1,0 +1,20 @@
+📌 cPanel Terminal Əmrləri:
+
+Əvvəlcə Terminal-da proyekt qovluğuna keçin:
+
+bash
+cd ~/public_html/UB
+
+Sonra bu əmri vurub Enter sıxın:
+
+bash
+php composer.phar install --ignore-platform-reqs
+
+💡 Əgər composer.phar faylının özü də silinibdirsə, bu tək sətri kopyalayıb Terminal-a yapışdırın (avtomatik composer-i endirib bütün vendor qovluğunu bərpa edəcək):
+
+bash
+curl -sS https://getcomposer.org/installer | php && php composer.phar install --ignore-platform-reqs
+
+Quraşdırma bitdikdən sonra vendor/autoload.php bərpa olunacaq və install.php səhifəsi dərhal açılacaq!
+
+4:48

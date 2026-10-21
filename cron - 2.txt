@@ -1,0 +1,42 @@
+
+nohup olmalidi olmasa procces itir startla yoxla
+
+php ~/public_html/UB/keepalive.php > /dev/null 2>&1
+
+
+
+2. Keepalive / Cron üçün Ən Düzgün Əmr
+
+Bot sönəndə avtomatik qalxsın, amma işləyirsə toxunmasın deyə iki üsuldan birini istifadə edə bilərsən:
+
+A) Terminal Crontab ilə (crontab -e):
+cron
+* * * * * cd /path/to/delta-php && bash start.sh >/dev/null 2>&1
+
+
+
+(Qeyd: /path/to/delta-php yerinə öz serverindəki tam yolu yazırsan. start.sh əgər bot işləyirsə heç nə etmir, sönübsə dərhal təmizləyib yenidən qaldırır).
+
+
+
+Əgər public_html-dədirsə, düzgün əmr belə olmalıdır:
+bash
+cd ~/public_html && pkill -9 -f 'php start.php'; pkill -9 -f 'MadelineProto worker'; rm -f sessions/bot.lock; sleep 1; nohup php start.php >> logs/bot.log 2>&1 &
+
+
+
+artıq watcher oldu
+
+
+
+nohup ~/public_html/UB/watcher.sh > /dev/null 2>&1 &
+
+
+
+cronuŞ
+* * * * * bash ~/public_html/UB/watcher.sh >/dev/null 2>&1
+
+
+
+al kill
+cd ~/public_html/UB && pkill -9 -f 'php start.php'; pkill -9 -f 'MadelineProto'; pkill -9 -f 'watcher'; pkill -9 -f 'while true'; rm -f sessions/bot.lock sessions/watcher.pid; chmod +x watcher.sh; sleep 1; nohup ./watcher.sh > /dev/null 2>&1 &

@@ -1,0 +1,4 @@
+AMP
+
+
+php ~/public_html/UB/keepalive.php > /dev/null 2>&1
