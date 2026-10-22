@@ -63,8 +63,8 @@ if ($botRunning) {
     exit;
 }
 
-// 2. Bot işləmir: Köhnə orphan MadelineProto workerlərini təmizləyirik (Proses limiti dolmasın)
-if (function_exists('shell_exec')) {
+// 2. Bot işləmir: Köhnə orphan MadelineProto workerlərini təmizləyirik (saytda aktiv giriş cəhdi yoxdursa)
+if (function_exists('shell_exec') && count(glob($rootDir . '/sessions/temp_*')) === 0) {
     @shell_exec("pkill -u " . escapeshellarg($currentUser) . " -9 -f 'MadelineProto worker' 2>/dev/null");
 }
 if (file_exists($lockFile)) {
