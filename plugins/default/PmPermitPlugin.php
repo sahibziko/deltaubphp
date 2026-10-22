@@ -39,7 +39,7 @@ class PmPermitPlugin extends BasePlugin {
                     $this->logPm("PM Qoruması söndürüldü (ownerId: {$this->ownerId})");
                     $message->editText("🚫 <b>PM Qoruması söndürüldü!</b>", parseMode: \danog\MadelineProto\ParseMode::HTML);
                 } else {
-                    $current = $this->getSetting($userId, 'pm_permit_active', '1') === '1' ? 'Aktiv' : 'Deaktiv';
+                    $current = $this->getSetting($userId, 'pm_permit_active', '0') === '1' ? 'Aktiv' : 'Deaktiv';
                     $limit = $this->getSetting($userId, 'pm_limit', '3');
                     $message->editText("ℹ️ <b>PM Qoruması:</b> {$current}\n📊 <b>Limit:</b> {$limit} mesaj\n<i>Dəyişmək üçün: <code>.pm on</code> və ya <code>.pm off</code></i>", parseMode: \danog\MadelineProto\ParseMode::HTML);
                 }
@@ -178,8 +178,8 @@ class PmPermitPlugin extends BasePlugin {
                 return;
             }
 
-            // PM Permit aktivdir? (Susmaya görə aktiv: '1')
-            $active = $this->getSetting($userId, 'pm_permit_active', '1');
+            // PM Permit aktivdir? (Susmaya görə deaktiv: '0')
+            $active = $this->getSetting($userId, 'pm_permit_active', '0');
             if ($active !== '1') {
                 return;
             }
