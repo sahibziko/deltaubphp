@@ -25,15 +25,15 @@ $currentUser = get_current_user();
 $startScript = $rootDir . '/start.php';
 
 if (function_exists('shell_exec')) {
-    // Shared hostda başqa istifadəçilərlə qarışmasın deyə yalnız öz istifadəçimiz və tam yol yoxlanılır
-    $cmdCheck = "ps -u " . escapeshellarg($currentUser) . " -o pid,cmd 2>/dev/null | grep " . escapeshellarg($startScript) . " | grep -v grep";
-    $psOut = @shell_exec($cmdCheck);
+    $psOut = @shell_exec("pgrep -f " . escapeshellarg($startScript) . " 2>/dev/null");
     if (!empty($psOut)) {
-        if (preg_match('/^\s*(\d+)/m', (string)$psOut, $m)) {
-            $foundPid = (int) $m[1];
+        $pids = array_filter(array_map('trim', explode("\n", (string)$psOut)));
+        foreach ($pids as $p) {
+            $foundPid = (int) $p;
             if ($foundPid > 0 && $foundPid !== getmypid()) {
                 $botRunning = true;
                 $pid = $foundPid;
+                break;
             }
         }
     }
@@ -63,9 +63,9 @@ if ($botRunning) {
     exit;
 }
 
-// 2. Bot işləmir: Köhnə orphan MadelineProto workerlərini təmizləyirik (saytda aktiv giriş cəhdi yoxdursa)
-if (function_exists('shell_exec') && count(glob($rootDir . '/sessions/temp_*')) === 0) {
-    @shell_exec("pkill -u " . escapeshellarg($currentUser) . " -9 -f 'MadelineProto worker' 2>/dev/null");
+// 2. Bot işləmir: Köhnə orphan MadelineProto workerlərini təmizləyirik
+if (function_exists('shell_exec')) {
+    @shell_exec("pkill -9 -f 'MadelineProto worker' 2>/dev/null");
 }
 if (file_exists($lockFile)) {
     @unlink($lockFile);
